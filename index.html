@@ -1,131 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEET Physics Quiz</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>NEET Physics Gujarati – Quiz Portal</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Roboto', 'Hind Vadodara', 'sans‑serif']
+          },
+          boxShadow: {
+            glow: '0 0 0 3px rgba(59,130,246,.35)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- questions database  -->
+  <!--  MUST be loaded before our script so `chapterData` is available -->
   <script src="questions.js"></script>
+
   <style>
-    /* --- condensed version of the user‑provided style (unchanged) --- */
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
-    body{background:linear-gradient(135deg,#1a2980,#26d0ce);color:#333;line-height:1.6;padding:20px;min-height:100vh}
-    /* trimmed for brevity – full style block from user sample preserved in original */
+    body{font-family:'Roboto','Hind Vadodara',sans-serif}
+    .option-btn{@apply flex items-start gap-3 w-full px-5 py-3 rounded-xl text-left bg-white/80 dark:bg-white/10 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:shadow-glow transition cursor-pointer}
+    .option-btn.correct{@apply bg-green-500/90 text-white hover:shadow-none}
+    .option-btn.incorrect{@apply bg-red-500/90 text-white hover:shadow-none}
+    .option-btn:disabled{@apply opacity-60 cursor-not-allowed hover:shadow-none}
   </style>
 </head>
-<body>
-  <div class="container">
-    <!-- HEADER -->
-    <header>
-      <button class="language-toggle" id="languageToggle"><i class="fas fa-language"></i> <span id="languageText">ગુજરાતી (Gujarati)</span></button>
-      <div class="header-content">
-        <div class="logo"><div class="logo-icon"><i class="fas fa-atom"></i></div><h1 id="headerTitle">NEET PHYSICS</h1></div>
-        <div class="chapter-name" id="chapterName">Electric Charges and Fields</div>
-      </div>
-    </header>
-
-    <div class="content-wrapper">
-      <!-- QUIZ AREA -->
-      <div class="quiz-container">
-        <div class="quiz-header">
-          <div class="question-counter"><i class="fas fa-question-circle"></i> <span id="questionCounter">Question 1 / 90</span></div>
-          <div class="marks"><i class="fas fa-star"></i> <span id="marksText">Marks: 4</span></div>
-        </div>
-        <div class="question-container">
-          <div class="question-text" id="questionText"></div>
-          <div class="options-container" id="optionsContainer"></div>
-        </div>
-        <div class="question-nav-grid" id="questionGrid"></div>
-        <div class="navigation">
-          <button class="btn" id="prevBtn" disabled><i class="fas fa-arrow-left"></i> <span id="prevBtnText">Previous</span></button>
-          <button class="btn" id="nextBtn"><span id="nextBtnText">Next</span> <i class="fas fa-arrow-right"></i></button>
-          <button class="btn btn-submit" id="submitBtn"><i class="fas fa-paper-plane"></i> <span id="submitBtnText">Submit</span></button>
-        </div>
-      </div>
-
-      <!-- SIDEBAR -->
-      <div class="sidebar">
-        <h2><i class="fas fa-info-circle"></i> <span id="instructionsTitle">Instructions</span></h2>
-        <div class="instructions"><ul id="instructionsList"></ul></div>
-        <div class="progress-container">
-          <h3><i class="fas fa-chart-line"></i> <span id="progressTitle">Progress</span></h3>
-          <progress id="progressBar" value="1" max="90"></progress>
-          <p id="progressText" style="text-align:center;font-weight:600;margin-top:10px">1/90 questions completed</p>
-        </div>
-      </div>
-    </div>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center">
+  <!-- language toggle -->
+  <div class="fixed top-4 right-4 flex gap-2 z-50">
+    <button id="lang-gu" class="px-3 py-1 rounded bg-amber-500 font-semibold">ગુજરાતી</button>
+    <button id="lang-en" class="px-3 py-1 rounded bg-slate-700 font-semibold">EN</button>
   </div>
 
+  <!-- Header -->
+  <header class="py-10 text-center w-full max-w-4xl">
+    <h1 id="title" class="text-3xl sm:text-4xl font-bold"></h1>
+    <p id="subtitle" class="mt-3 text-sm text-slate-300 leading-relaxed"></p>
+  </header>
+
+  <!-- Main app container -->
+  <main id="app" class="w-full max-w-4xl grow mb-10 p-4 sm:p-6">
+    <!-- Home -->
+    <section id="home" class="space-y-6"></section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <h2 id="quizName" class="text-xl font-semibold"></h2>
+        <span id="progressText" class="text-sm text-amber-400 font-medium"></span>
+      </div>
+      <div class="w-full h-2 rounded-full bg-slate-700"><div id="progressBar" class="h-full bg-amber-500 rounded-full" style="width:0%"></div></div>
+
+      <article class="bg-slate-800/70 backdrop-blur p-6 rounded-2xl shadow-lg space-y-6">
+        <p id="questionText" class="text-base sm:text-lg leading-relaxed"></p>
+        <div id="optionsBox" class="grid sm:grid-cols-2 gap-4"></div>
+        <div id="solutionBox" class="hidden bg-green-50/5 border border-green-500/40 p-4 rounded-lg">
+          <p class="font-semibold" id="solutionHeading"></p>
+          <p id="solutionBody" class="mt-1 text-sm"></p>
+        </div>
+      </article>
+
+      <div class="flex justify-between items-center pt-6">
+        <button id="btnBack" class="hidden px-5 py-2 rounded bg-slate-700 hover:bg-slate-600"></button>
+        <button id="btnHome" class="px-5 py-2 rounded bg-blue-600 hover:bg-blue-500 font-semibold"></button>
+        <button id="btnNext" class="hidden px-5 py-2 rounded bg-amber-600 hover:bg-amber-500"></button>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="result" class="hidden text-center space-y-6">
+      <h2 id="resultTitle" class="text-3xl font-bold"></h2>
+      <p id="scoreLine" class="text-lg"></p>
+      <button id="btnRestart" class="px-8 py-3 rounded bg-amber-600 hover:bg-amber-500"></button>
+    </section>
+  </main>
+
 <script>
-// ---- QUIZ LOGIC (simplified) ----
-const TOTAL_QUESTIONS = chapterData[0].quizzes[0].questions.length;
-let questions = [...chapterData[0].quizzes[0].questions];
-let answers = Array(TOTAL_QUESTIONS).fill(null);
-let currentQuestion = 0;
-let currentLanguage = 'gu';
-
-const ids = q => document.getElementById(q);
-const languageToggle = ids('languageToggle');
-const languageText   = ids('languageText');
-const questionText   = ids('questionText');
-const optionsC       = ids('optionsContainer');
-const questionCounter= ids('questionCounter');
-const prevBtn        = ids('prevBtn');
-const nextBtn        = ids('nextBtn');
-const submitBtn      = ids('submitBtn');
-const progressBar    = ids('progressBar');
-const progressText   = ids('progressText');
-const questionGrid   = ids('questionGrid');
-
-function buildGrid(){
-  questionGrid.innerHTML='';
-  for(let i=0;i<TOTAL_QUESTIONS;i++){
-    const b=document.createElement('div');
-    b.className='question-nav-btn';
-    b.textContent=i+1;
-    b.onclick=()=>{currentQuestion=i;render();};
-    questionGrid.appendChild(b);
-  }
-}
-
-function render(){
-  const q=questions[currentQuestion];
-  questionText.textContent=q[currentLanguage].question;
-  optionsC.innerHTML='';
-  q[currentLanguage].options.forEach((op,idx)=>{
-    const opt=document.createElement('div');
-    opt.className='option';
-    if(answers[currentQuestion]===idx) opt.classList.add('selected');
-    opt.innerHTML=`<span class='option-letter'>${String.fromCharCode(65+idx)}</span><span>${op}</span>`;
-    opt.onclick=()=>{answers[currentQuestion]=idx;render();updateUI();};
-    optionsC.appendChild(opt);
-  });
-  questionCounter.textContent=`Question ${currentQuestion+1} / ${TOTAL_QUESTIONS}`;
-  prevBtn.disabled=currentQuestion===0;
-  nextBtn.disabled=currentQuestion===TOTAL_QUESTIONS-1;
-  progressBar.value=currentQuestion+1;
-  progressText.textContent=`${currentQuestion+1}/${TOTAL_QUESTIONS} questions completed`;
-  // grid styling
-  Array.from(questionGrid.children).forEach((btn,idx)=>{
-    btn.className='question-nav-btn';
-    if(idx===currentQuestion) btn.classList.add('current');
-    if(answers[idx]!=null) btn.classList.add('answered');
-  });
-}
-
-function updateLanguageTexts(){
-  languageText.textContent=currentLanguage==='gu'? 'English':'ગુજરાતી (Gujarati)';
-}
-
-prevBtn.onclick=()=>{currentQuestion--;render();};
-nextBtn.onclick=()=>{currentQuestion++;render();};
-submitBtn.onclick=()=>{
-  const score=answers.reduce((s,ans,i)=> s+(ans===questions[i].answer?1:0),0);
-  alert(`You scored ${score}/${TOTAL_QUESTIONS}`);
+// -------------- Translation strings ----------------
+const TXT={
+  gu:{title:'NEET PHYSICS GUJARATI : NEET ક્વિઝ',sub:'NEET MCQ – English અને Gujarati માં',start:'ક્વિઝ શરૂ કરો',back:'પાછળ',next:'આગળ',home:'હોમ',progress:'પ્રશ્ન',solution:'ઉકેલ:',result:'ક્વિઝ પૂર્ણ!',score:'તમારો સ્કોર:',restart:'ફરી શરૂ'},
+  en:{title:'NEET PHYSICS GUJARATI : NEET Quiz',sub:'NEET MCQ – in English & Gujarati',start:'Start Quiz',back:'Back',next:'Next',home:'Home',progress:'Question',solution:'Solution:',result:'Quiz Complete!',score:'Your Score:',restart:'Restart'}
 };
-languageToggle.onclick=()=>{currentLanguage = currentLanguage==='gu'?'en':'gu';updateLanguageTexts();render();};
-
-buildGrid();updateLanguageTexts();render();
+let lang='gu';
+// -------------- DOM refs --------------
+const $=q=>document.querySelector(q);
+const els={title:'#title',subtitle:'#subtitle',home:'#home',quiz:'#quiz',result:'#result',quizName:'#quizName',progressText:'#progressText',progressBar:'#progressBar',questionText:'#questionText',optionsBox:'#optionsBox',solutionBox:'#solutionBox',solutionHeading:'#solutionHeading',solutionBody:'#solutionBody',btnBack:'#btnBack',btnNext:'#btnNext',btnHome:'#btnHome',btnRestart:'#btnRestart',resultTitle:'#resultTitle',scoreLine:'#scoreLine'};
+// -------------- state --------------
+let chapter=null,quiz=null,qIndex=0,score=0;
+// -------------- helpers --------------
+function t(k){return TXT[lang][k];}
+function show(id){$(id).classList.remove('hidden');}
+function hide(id){$(id).classList.add('hidden');}
+// -------------- language switch --------------
+function setLang(l){lang=l;updateStatic();renderHome();if(quiz)renderQ();$('#lang-gu').classList.toggle('bg-amber-500',lang==='gu');$('#lang-en').classList.toggle('bg-amber-500',lang==='en');}
+$('#lang-gu').onclick=()=>setLang('gu');$('#lang-en').onclick=()=>setLang('en');
+// -------------- static texts --------------
+function updateStatic(){$(els.title).textContent=t('title');$(els.subtitle).textContent=t('sub');$(els.btnBack).textContent=t('back');$(els.btnNext).textContent=t('next');$(els.btnHome).textContent=t('home');$(els.solutionHeading).textContent=t('solution');$(els.btnRestart).textContent=t('restart');$(els.resultTitle).textContent=t('result');}
+// -------------- home render -------------
+function renderHome(){hide(els.quiz);hide(els.result);show(els.home);$(els.home).innerHTML='';chapterData.forEach(ch=>{const card=document.createElement('button');card.className='block w-full text-left bg-slate-800/70 p-6 rounded-2xl hover:shadow-glow';card.innerHTML=`<h3 class="text-lg font-semibold mb-2">${ch[lang].name}</h3><p class="text-sm text-slate-300 mb-4">${ch[lang].description}</p><span class="inline-block bg-blue-600 text-xs text-white px-3 py-1 rounded-full">${t('start')}</span>`;card.onclick=()=>startQuiz(ch.quizzes[0],ch);$(els.home).append(card);});}
+// -------------- start quiz --------------
+function startQuiz(qz,ch){chapter=ch;quiz=qz;qIndex=0;score=0;hide(els.home);show(els.quiz);renderQ();}
+// -------------- render question --------------
+function renderQ(){const q=quiz.questions[qIndex];$(els.quizName).textContent=quiz.name;$(els.progressText).textContent=`${t('progress')} ${qIndex+1}/${quiz.questions.length}`;$(els.progressBar).style.width=`${(qIndex+1)/quiz.questions.length*100}%`;$(els.questionText).textContent=q[lang].question;const box=$(els.optionsBox);box.innerHTML='';q[lang].options.forEach((op,i)=>{const b=document.createElement('button');b.className='option-btn';b.innerHTML=`<span class="font-bold">${String.fromCharCode(65+i)}.</span> <span>${op}</span>`;b.onclick=()=>select(i,b,q);box.append(b);});$(els.solutionBox).classList.add('hidden');$(els.btnBack).classList.toggle('hidden',qIndex===0);$(els.btnNext).classList.add('hidden');}
+function select(idx,btn,q){[...$(els.optionsBox).children].forEach(b=>b.disabled=true);if(idx===q.answer){btn.classList.add('correct');score++;}else{btn.classList.add('incorrect');[...$(els.optionsBox).children][q.answer].classList.add('correct');}if(q[lang].solution){$(els.solutionBody).textContent=q[lang].solution;$(els.solutionBox).classList.remove('hidden');}$(els.btnNext).classList.remove('hidden');if(qIndex===quiz.questions.length-1)$(els.btnNext).textContent=t('result');}
+$('#btnNext').onclick=()=>{if(qIndex<quiz.questions.length-1){qIndex++;renderQ();}else showResult();};
+$('#btnBack').onclick=()=>{qIndex--;renderQ();};
+$('#btnHome').onclick=()=>renderHome();
+function showResult(){hide(els.quiz);show(els.result);$(els.scoreLine).textContent=`${t('score')} ${score}/${quiz.questions.length}`;}
+$('#btnRestart').onclick=()=>renderHome();
+// -------------- init --------------
+updateStatic();renderHome();
 </script>
 </body>
 </html>

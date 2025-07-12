@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="gu" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEET Physics Gujarati – NEET Practice Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="questions.js"></script>
+  <style>
+    .option-btn {
+      @apply w-full text-left px-5 py-3 rounded-xl font-medium shadow-md bg-gradient-to-r from-blue-100 to-blue-300 dark:from-blue-700 dark:to-blue-800 border border-blue-400 dark:border-blue-600 hover:scale-[1.01] transition-transform;
+    }
+    .option-btn.correct { background-color: #22c55e; color: white; }
+    .option-btn.incorrect { background-color: #ef4444; color: white; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+  <div class="max-w-3xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl md:text-3xl font-bold">NEET Physics Gujarati</h1>
+      <button onclick="toggleLang()" class="bg-blue-600 text-white px-3 py-1 rounded">ભાષા બદલો</button>
+    </div>
+    <p class="mb-4 text-sm">NEET Practice Quiz – Multiple choice questions in English and Gujarati.</p>
+
+    <div id="quiz-box" class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow">
+      <div id="questionBox" class="mb-4 text-lg font-semibold"></div>
+      <div id="optionsBox" class="space-y-2"></div>
+      <div class="flex justify-between mt-6">
+        <button onclick="prevQuestion()" class="bg-gray-300 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-400">◀ <span id="backText">પાછળ</span></button>
+        <button onclick="nextQuestion()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"><span id="nextText">આગળ</span> ▶</button>
+      </div>
+      <div class="mt-4 hidden" id="resultBox">
+        <h2 class="text-xl font-bold"><span id="resultTitle">તમારો સ્કોર:</span> <span id="scoreText"></span></h2>
+        <button onclick="restartQuiz()" class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"><span id="restartText">પુનઃ શરૂ કરો</span></button>
+      </div>
+    </div>
+
+    <footer class="mt-6 text-center text-sm text-gray-500">
+      📱 Join us:
+      <a href="https://chat.whatsapp.com/LGeExJ4a5562e13B04uuQm" class="text-green-600 underline">WhatsApp Group</a> |
+      <a href="https://t.me/neet_physics_gujarati" class="text-blue-400 underline">Telegram Channel</a>
+    </footer>
+  </div>
+
+  <script>
+    const labels = {
+      gu: { next: 'આગળ', back: 'પાછળ', restart: 'પુનઃ શરૂ કરો', result: 'તમારો સ્કોર:' },
+      en: { next: 'Next', back: 'Back', restart: 'Restart', result: 'Your Score:' }
+    };
+
+    let currentLang = 'gu';
+    let questions = [];
+    let currentIndex = 0;
+    let score = 0;
+
+    function updateLangUI() {
+      document.getElementById("backText").innerText = labels[currentLang].back;
+      document.getElementById("nextText").innerText = labels[currentLang].next;
+      document.getElementById("restartText").innerText = labels[currentLang].restart;
+      document.getElementById("resultTitle").innerText = labels[currentLang].result;
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'gu' ? 'en' : 'gu';
+      updateLangUI();
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = questions[currentIndex];
+      document.getElementById("questionBox").innerHTML = `<span class='text-yellow-600'>Q${currentIndex+1}:</span> ` + q[currentLang].question;
+      const optionsBox = document.getElementById("optionsBox");
+      optionsBox.innerHTML = "";
+      q[currentLang].options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.innerHTML = `${String.fromCharCode(65+i)}. ${opt}`;
+        btn.className = "option-btn";
+        btn.onclick = () => selectOption(i, btn);
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function selectOption(index, btn) {
+      if (questions[currentIndex].selected !== undefined) return;
+      questions[currentIndex].selected = index;
+      if (index === questions[currentIndex].answer) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("incorrect");
+        const correct = document.querySelectorAll(".option-btn")[questions[currentIndex].answer];
+        correct.classList.add("correct");
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        loadQuestion();
+      } else {
+        document.getElementById("quiz-box").classList.add("bg-green-100");
+        document.getElementById("resultBox").classList.remove("hidden");
+        document.getElementById("scoreText").innerText = `${score} / ${questions.length}`;
+        document.getElementById("questionBox").innerHTML = "Quiz Complete!";
+        document.getElementById("optionsBox").innerHTML = "";
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        loadQuestion();
+      }
+    }
+
+    function restartQuiz() {
+      currentIndex = 0;
+      score = 0;
+      questions.forEach(q => delete q.selected);
+      document.getElementById("resultBox").classList.add("hidden");
+      document.getElementById("quiz-box").classList.remove("bg-green-100");
+      loadQuestion();
+    }
+
+    window.onload = () => {
+      if (typeof chapterData !== 'undefined') {
+        questions = [...chapterData[0].quizzes[0].questions];
+        updateLangUI();
+        loadQuestion();
+      } else {
+        alert("questions.js not loaded or empty.");
+      }
+    };
+  </script>
+</body>
+</html>

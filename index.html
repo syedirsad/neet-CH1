@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEET PHYSICS GUJARATI : GSEB – NEET QUIZ PORTAL</title>
+  <title>NEET Physics Gujarati – Quiz Portal</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
 
-  <!-- Question bank (must define `chapterData`) -->
+  <!-- Question bank -->
   <script defer src="questions.js"></script>
 
-  <!-- MathJax (for LaTeX) -->
+  <!-- MathJax -->
   <script>
     window.MathJax = { tex:{inlineMath:[['$','$'],['\\(','\\)']]}, svg:{fontCache:'global'} };
   </script>
   <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-  <!-- Icons (for WhatsApp/Telegram) -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
@@ -31,16 +31,13 @@
     .solution-box         {background:#f0fdf4;border-left:4px solid #4ade80;padding:1rem;margin-top:1.5rem;border-radius:0.5rem}
     .lang-btn             {transition:all .3s}
     .lang-btn.active      {background:#f59e0b;color:#fff;font-weight:bold}
-    #logo-watermark{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      width:300px;opacity:.15;z-index:50;pointer-events:none;
-    }
+    #logo-watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;opacity:.15;z-index:50;pointer-events:none}
   </style>
 </head>
 
 <body class="bg-amber-50 flex flex-col items-center min-h-screen p-4 text-slate-800 leading-relaxed">
 
-  <!-- language switcher -->
+  <!-- Language switcher -->
   <div class="w-full max-w-4xl mx-auto mb-4 flex justify-end">
     <div class="bg-white rounded-lg p-1 shadow-md">
       <button id="lang-gu-btn" class="lang-btn px-4 py-2 rounded-md text-sm">ગુજરાતી</button>
@@ -48,7 +45,7 @@
     </div>
   </div>
 
-  <!-- main card -->
+  <!-- Main card -->
   <div id="app-root" class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6 sm:p-8">
 
     <!-- Home -------------------------------------------------------------->
@@ -65,73 +62,78 @@
         <div id="progress" class="text-base font-medium"></div>
       </div>
       <p id="quiz-description" class="text-sm sm:text-base text-slate-600 mb-6"></p>
-      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
         <div id="progress-bar" class="bg-amber-500 h-2.5 rounded-full" style="width:0%"></div>
       </div>
+      <!-- live marks -->
+      <div id="live-marks" class="text-right text-sm text-gray-600 font-medium mb-4">સ્કોર : 0</div>
 
       <div id="question-card">
         <p id="question-text" class="text-lg sm:text-xl mb-6 leading-relaxed"></p>
         <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
         <div id="solution-display" class="solution-box hidden">
-          <h3 id="solution-heading" class="font-semibold mb-2"></h3>
           <p id="solution-text" class="text-sm sm:text-base"></p>
         </div>
       </div>
 
       <div class="mt-8 flex justify-between items-center">
-        <button id="back-btn" class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-400 transition hidden"></button>
-        <button id="home-btn" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-blue-600 transition"></button>
-        <button id="next-btn" class="bg-amber-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-amber-600 transition hidden"></button>
+        <button id="back-btn"  class="bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-xl shadow-md hover:bg-gray-400 transition hidden"></button>
+        <button id="home-btn"  class="bg-blue-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-blue-600 transition"></button>
+        <button id="next-btn"  class="bg-amber-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-amber-600 transition hidden"></button>
       </div>
     </div>
 
     <!-- Result ------------------------------------------------------------>
     <div id="result-container" class="text-center hidden">
       <h2 id="result-title" class="text-3xl font-bold mb-4"></h2>
-      <p id="score-text" class="text-xl mb-8"></p>
+      <p id="score-text"  class="text-xl mb-8"></p>
       <button id="restart-btn" class="bg-amber-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-amber-600 transition"></button>
     </div>
   </div>
 
-  <!-- Group buttons (always visible) ------------------------------------->
+  <!-- Group links -->
   <footer class="mt-8 text-center space-x-4">
-    <a href="https://chat.whatsapp.com/LGeExJ4a5562e13B04uuQm" target="_blank"
-       class="inline-block px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
+    <a href="https://chat.whatsapp.com/LGeExJ4a5562e13B04uuQm" target="_blank" class="inline-block px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition">
       <i class="fab fa-whatsapp"></i> WhatsApp
     </a>
-    <a href="https://t.me/neet_physics_gujarati" target="_blank"
-       class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
+    <a href="https://t.me/neet_physics_gujarati" target="_blank" class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
       <i class="fab fa-telegram"></i> Telegram
     </a>
   </footer>
 
-  <!-- Logo watermark -->
-  <img id="logo-watermark"
-       src="https://raw.githubusercontent.com/syedirsad/CHAP1/main/logo.png"
-       alt="NPG Logo">
+  <!-- Watermark -->
+  <img id="logo-watermark" src="https://raw.githubusercontent.com/syedirsad/CHAP1/main/logo.png" alt="NPG Logo">
 
-  <!-- MAIN APP SCRIPT ---------------------------------------------------->
+  <!-- MAIN SCRIPT -------------------------------------------------------->
   <script>
-  /* ------------------------- sanity check ------------------------- */
-  if (typeof chapterData === 'undefined') {
-    console.warn('⚠️  questions.js did not load or does not expose `chapterData`!');
-  }
+  /* ---------------- sanity check -------------- */
+  if(typeof chapterData==='undefined'){console.warn('⚠️  questions.js missing or no chapterData');}
 
-  /* ------------------------- i18n strings ------------------------- */
-  const translations = {
-    gu:{mainTitle:"NEET PHYSICS GUJARATI : GSEB - NEET ક્વિઝ પોર્ટલ",
-        mainSubtitle:`GSEB બોર્ડ PYQ આધારિત ક્વિઝ દ્વારા તમારા ભૌતિકશાસ્ત્રનું જ્ઞાન ચકાસો.<br>પ્રશ્ન? Irshad Sir: +91 96018 27762`,
-        startQuizBtn:"ક્વિઝ શરૂ કરો",progressText:"પ્રશ્ન",solutionHeading:"ઉકેલ:",
-        nextBtn:"આગળ",backBtn:"પાછળ",resultTitle:"ક્વિઝ પૂર્ણ!",
-        scoreText:"તમારો સ્કોર:",restartBtn:"હોમ પેજ",homeBtn:"હોમ"},
-    en:{mainTitle:"NEET PHYSICS GUJARATI : GSEB – NEET QUIZ PORTAL",
-        mainSubtitle:`Test your physics knowledge with quizzes based on GSEB PYQs.<br>Need help? Call Irshad Sir: +91 96018 27762`,
-        startQuizBtn:"Start Quiz",progressText:"Question",solutionHeading:"Solution:",
-        nextBtn:"Next",backBtn:"Back",resultTitle:"Quiz Complete!",
-        scoreText:"Your Score:",restartBtn:"Home Page",homeBtn:"Home"}
+  /* ---------------- translations -------------- */
+  const translations={
+    gu:{
+      mainTitle:"NEET PHYSICS GUJARATI : NEET પ્રેક્ટિસ ક્વિઝ પોર્ટલ",
+      mainSubtitle:`NEET આધારિત પ્રેક્ટિસ MCQs દ્વારા તમારા ભૌતિકશાસ્ત્રનું જ્ઞાન ચકાસો<br>અને તૈયારી મજબૂત કરો – ✔️ +4, ❌ -1 ગુણ કાર્યક્રમ.`,
+      startQuizBtn:"ક્વિઝ શરૂ કરો",
+      progressText:"પ્રશ્ન",
+      nextBtn:"આગળ", backBtn:"પાછળ",
+      resultTitle:"ક્વિઝ પૂર્ણ!",
+      scoreText:"તમારા ગુણ:",
+      restartBtn:"હોમ પેજ", homeBtn:"હોમ"
+    },
+    en:{
+      mainTitle:"NEET PHYSICS GUJARATI : NEET Practice Quiz Portal",
+      mainSubtitle:`Strengthen your prep with NEET‑style practice MCQs.<br>Marking: ✔️ +4 ❌ -1.`,
+      startQuizBtn:"Start Quiz",
+      progressText:"Question",
+      nextBtn:"Next", backBtn:"Back",
+      resultTitle:"Quiz Complete!",
+      scoreText:"Your Marks:",
+      restartBtn:"Home Page", homeBtn:"Home"
+    }
   };
 
-  /* ------------------------- DOM references ---------------------- */
+  /* ---------------- DOM refs ----------------- */
   const homePage=document.getElementById('home-page');
   const chaptersContainer=document.getElementById('chapters-container');
   const quizPage=document.getElementById('quiz-page');
@@ -148,24 +150,24 @@
   const progressText=document.getElementById('progress');
   const progressBar=document.getElementById('progress-bar');
   const scoreText=document.getElementById('score-text');
+  const liveMarks=document.getElementById('live-marks');
   const langGuBtn=document.getElementById('lang-gu-btn');
   const langEnBtn=document.getElementById('lang-en-btn');
   const homeBtn=document.getElementById('home-btn');
 
-  /* ------------------------- app state --------------------------- */
-  let lang='gu', view='home';
-  let chapter=null, quiz=null, questions=[], qIndex=0, score=0;
+  /* ---------------- state -------------------- */
+  let lang='gu',view='home';
+  let chapter=null,quiz=null,questions=[],qIndex=0,marks=0;
 
-  /* ------------------------- helpers ----------------------------- */
+  /* ---------------- helpers ------------------ */
   const t=k=>translations[lang][k];
-  const mathRender=els=>window.MathJax?.typesetPromise?.(els).catch(()=>{});
+  const renderMath=els=>window.MathJax?.typesetPromise?.(els).catch(()=>{});
 
-  /* ------------------------- UI text refresher ------------------- */
+  /* ---------------- UI text refresh ---------- */
   function updateUIText(){
     document.documentElement.lang=lang;
     document.getElementById('main-title').innerText=t('mainTitle');
     document.getElementById('main-subtitle').innerHTML=t('mainSubtitle');
-    document.getElementById('solution-heading').innerText=t('solutionHeading');
     nextBtn.innerText=t('nextBtn');
     backBtn.innerText=t('backBtn');
     restartBtn.innerText=t('restartBtn');
@@ -174,11 +176,14 @@
     langEnBtn.classList.toggle('active',lang==='en');
   }
 
-  /* ------------------------- home page --------------------------- */
+  /* ---------------- Home page ---------------- */
   function renderHome(){
-    view='home';homePage.classList.remove('hidden');
-    quizPage.classList.add('hidden');resultContainer.classList.add('hidden');
-    chaptersContainer.innerHTML='';updateUIText();
+    view='home';
+    homePage.classList.remove('hidden');
+    quizPage.classList.add('hidden');
+    resultContainer.classList.add('hidden');
+    chaptersContainer.innerHTML='';
+    updateUIText();
 
     chapterData.forEach(ch=>{
       const card=document.createElement('div');
@@ -197,80 +202,86 @@
     });
   }
 
-  /* ------------------------- load quiz --------------------------- */
+  /* ---------------- Load quiz ---------------- */
   window.loadQuiz=function(chId,qId){
     chapter=chapterData.find(c=>c.id===chId);
     quiz=chapter.quizzes.find(q=>q.id===qId);
     questions=[...quiz.questions];
     quizTitle.innerText=`${chapter[lang].name} · ${quiz.name}`;
     quizDescription.innerText=chapter[lang].description;
-    homePage.classList.add('hidden');quizPage.classList.remove('hidden');
+    homePage.classList.add('hidden');
+    quizPage.classList.remove('hidden');
     startQuiz();
   };
 
-  function startQuiz(){qIndex=0;score=0;showQuestion();}
+  function startQuiz(){qIndex=0;marks=0;showQuestion();}
 
-  /* ------------------------- show question ----------------------- */
+  /* ---------------- Show question ------------ */
   function showQuestion(){
     resetState();
     const q=questions[qIndex][lang];
     const origin=questions[qIndex].origin||'';
-    progressText.innerHTML=`<strong>${t('progressText')} ${qIndex+1}</strong> / ${questions.length}`;
+    progressText.innerHTML=`<strong>${t('progressText')} ${qIndex+1}</strong> / ${questions.length}`;
     progressBar.style.width=`${(qIndex)/questions.length*100}%`;
-    questionText.innerHTML=`${q.question} <br><small class="text-gray-500 font-semibold">[${origin}]</small>`;
+    liveMarks.innerText=`સ્કોર : ${marks}`;
+    questionText.innerHTML=`${q.question}<br><small class="text-gray-500 font-semibold">[${origin}]</small>`;
     q.options.forEach((opt,i)=>{
-      const b=document.createElement('button');
-      b.innerHTML=opt;
-      b.className='option-btn w-full p-4 text-left bg-slate-100 rounded-lg border-2 border-transparent hover:bg-slate-200 hover:border-amber-400 transition';
-      b.dataset.i=i;b.onclick=selectAnswer;
-      optionsContainer.append(b);
+      const btn=document.createElement('button');
+      btn.innerHTML=opt;
+      btn.className='option-btn w-full p-4 text-left bg-slate-100 rounded-lg border-2 border-transparent hover:bg-slate-200 hover:border-amber-400 transition';
+      btn.dataset.i=i;
+      btn.onclick=selectAnswer;
+      optionsContainer.append(btn);
     });
-    mathRender([questionText,optionsContainer]);
+    renderMath([questionText,optionsContainer]);
     backBtn.classList.toggle('hidden',qIndex===0);
   }
 
   function resetState(){
-    nextBtn.classList.add('hidden');solutionDisplay.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+    solutionDisplay.classList.add('hidden');
     optionsContainer.innerHTML='';
   }
 
-  /* ------------------------- answer handling --------------------- */
+  /* ---------------- Answer handling ---------- */
   function selectAnswer(e){
-    const sel=+e.currentTarget.dataset.i;
+    const chosen=+e.currentTarget.dataset.i;
     const correct=questions[qIndex].answer;
-    if(sel===correct){e.currentTarget.classList.add('correct');score++;}
-    else e.currentTarget.classList.add('incorrect');
-    [...optionsContainer.children].forEach(b=>{
-      if(+b.dataset.i===correct) b.classList.add('correct');
-      b.disabled=true;
+    if(chosen===correct){e.currentTarget.classList.add('correct');marks+=4;}
+    else{e.currentTarget.classList.add('incorrect');marks-=1;}
+    [...optionsContainer.children].forEach(btn=>{
+      if(+btn.dataset.i===correct) btn.classList.add('correct');
+      btn.disabled=true;
     });
-    solutionText.innerHTML=questions[qIndex][lang].solution;
-    solutionDisplay.classList.remove('hidden');mathRender([solutionText]);
-    nextBtn.classList.remove('hidden');
+    solutionText.innerHTML=questions[qIndex][lang].solution||'';
+    if(solutionText.innerHTML.trim()) solutionDisplay.classList.remove('hidden');
+    renderMath([solutionText]);
+    liveMarks.innerText=`સ્કોર : ${marks}`;
     nextBtn.innerText=qIndex===questions.length-1?t('resultTitle'):t('nextBtn');
+    nextBtn.classList.remove('hidden');
   }
 
-  /* ------------------------- nav buttons ------------------------- */
-  nextBtn.onclick=()=>{
-    if(qIndex<questions.length-1){qIndex++;showQuestion();}
-    else showScore();
-  };
-  backBtn.onclick=()=>{qIndex--;showQuestion();};
+  /* ---------------- Nav buttons ------------- */
+  nextBtn.onclick=()=>{qIndex<questions.length-1?++qIndex:showScore();if(qIndex<questions.length)showQuestion();};
+  backBtn.onclick=()=>{--qIndex;showQuestion();};
   homeBtn.onclick=renderHome;
   restartBtn.onclick=renderHome;
 
-  /* ------------------------- score page -------------------------- */
+  /* ---------------- Score page -------------- */
   function showScore(){
-    view='result';quizPage.classList.add('hidden');resultContainer.classList.remove('hidden');
-    scoreText.innerHTML=`${t('scoreText')} ${score} / ${questions.length}`;
+    view='result';
+    quizPage.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
+    const max=questions.length*4;
+    scoreText.innerHTML=`${t('scoreText')} ${marks} / ${max}`;
     progressBar.style.width='100%';
   }
 
-  /* ------------------------- language switch --------------------- */
+  /* ---------------- Lang switch ------------- */
   langGuBtn.onclick=()=>{lang='gu';updateUIText();view==='home'?renderHome():view==='quiz'?showQuestion():showScore();};
   langEnBtn.onclick=()=>{lang='en';updateUIText();view==='home'?renderHome():view==='quiz'?showQuestion():showScore();};
 
-  /* ------------------------- boot -------------------------------- */
+  /* ---------------- Boot -------------------- */
   document.addEventListener('DOMContentLoaded',renderHome);
   </script>
 </body>
